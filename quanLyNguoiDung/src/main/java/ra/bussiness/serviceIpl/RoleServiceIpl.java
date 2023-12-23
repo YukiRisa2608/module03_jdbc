@@ -1,9 +1,7 @@
 package ra.bussiness.serviceIpl;
 
 import ra.bussiness.dao.IRoleDao;
-import ra.bussiness.dao.IUserDao;
 import ra.bussiness.daoIpl.RoleDaoIpl;
-import ra.bussiness.daoIpl.UserDaoIpl;
 import ra.bussiness.model.Role;
 import ra.bussiness.service.IRoleService;
 
