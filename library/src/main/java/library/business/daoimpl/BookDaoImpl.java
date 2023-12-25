@@ -106,7 +106,7 @@ public class BookDaoImpl implements IBookDao {
 
             if (book.getBookId() == null) {
                 // chức năng thêm mới
-                if (book.getBookName().equals(s.getBookName())){
+                if (s != null && book.getBookName().equals(s.getBookName())){
                     System.out.println("Duplicate Book Name");
                     return;
                 }
@@ -152,7 +152,7 @@ public class BookDaoImpl implements IBookDao {
             call.setLong(1, id);
             call.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         } finally {
             ConnectDB.closeConnection(conn); // đóng kết nối
         }

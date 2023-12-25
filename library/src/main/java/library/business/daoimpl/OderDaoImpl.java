@@ -1,8 +1,10 @@
 package library.business.daoimpl;
 
 import library.business.dao.IOderDao;
+import library.business.model.LibraryRevenue;
 import library.business.model.Oder;
 import library.business.model.OderDto;
+import library.business.model.StatisticalBook;
 import library.business.util.ConnectDB;
 import library.business.util.Convert;
 import library.business.util.Format;
@@ -21,13 +23,13 @@ public class OderDaoImpl implements IOderDao {
     @Override
     public List<OderDto> findAll(int displayOption) {
         List<OderDto> orderDtos = new ArrayList<>();
-        try{
+        try {
             Connection connection = ConnectDB.openConnection();
             CallableStatement callableStatement = connection.prepareCall("{call GetOrdersByOrderStatus(?)}");
             callableStatement.setInt(1, displayOption);
 
             ResultSet rs = callableStatement.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Long orderId = rs.getLong(1);
                 String borrwer_name = rs.getString(2);
                 Long bookId = rs.getLong(3);
@@ -38,7 +40,7 @@ public class OderDaoImpl implements IOderDao {
 
                 orderDtos.add(new OderDto(orderId, borrwer_name, bookId, order_at, total_price, borrow_time, order_status));
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return orderDtos;
@@ -47,7 +49,7 @@ public class OderDaoImpl implements IOderDao {
     @Override
     public Oder findById(Long id) {
         Oder oder = null;
-        try{
+        try {
             Connection connection = ConnectDB.openConnection();
             CallableStatement callableStatement = connection.prepareCall("{call GetOrderById(?)}");
             callableStatement.setLong(1, id);
@@ -65,7 +67,7 @@ public class OderDaoImpl implements IOderDao {
 
                 oder = new Oder(orderId, borrwer_name, bookId, order_at, total_price, borrow_time, order_status);
             }
-        } catch(SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return oder;
@@ -76,12 +78,12 @@ public class OderDaoImpl implements IOderDao {
         // Trong phương thức save của OderDaoImpl
         try {
             Connection connection = ConnectDB.openConnection();
-            if (order.getOrderId() == null){
+            if (order.getOrderId() == null) {
                 CallableStatement callableStatement = connection.prepareCall("{call CreateOrder(?, ?)}");
                 callableStatement.setString(1, order.getBorrowerName());
                 callableStatement.setLong(2, order.getBookId());
                 callableStatement.executeUpdate();
-            }else {
+            } else {
                 CallableStatement callableStatement = connection.prepareCall("{call ReturnBook(?)}");
                 callableStatement.setLong(1, order.getOrderId());
                 callableStatement.executeUpdate();
@@ -116,9 +118,68 @@ public class OderDaoImpl implements IOderDao {
                 oderDto.setOrderAt(order_at);
                 System.out.println("Order ID: " + orderId);
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return oderDto;
+    }
+
+    @Override
+    public List<StatisticalBook> statisticalBorrowBook() {
+        List<StatisticalBook> statisticalBookList = new ArrayList<>();
+
+        try {
+            Connection connection = ConnectDB.openConnection();
+            CallableStatement callableStatement = connection.prepareCall("{call CountBookBorrowThisMonth()}");
+            ResultSet rs = callableStatement.executeQuery();
+            while (rs.next()) {
+                Long id = rs.getLong("book_id");
+                String name = rs.getString("book_name");
+                int count = rs.getInt("count");
+                StatisticalBook statisticalBook = new StatisticalBook(id, name, count);
+                statisticalBookList.add(statisticalBook);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return statisticalBookList;
+    }
+
+    @Override
+    public LibraryRevenue calRevenueCurrentYear() {
+        LibraryRevenue libraryRevenue = null;
+        try {
+            Connection connection = ConnectDB.openConnection();
+            CallableStatement call = connection.prepareCall("{call CalRevenueForCurrentYear()}");
+
+            ResultSet rs = call.executeQuery();
+            if (rs.next()){
+                libraryRevenue = new LibraryRevenue(rs.getBigDecimal("library_revenue"));
+            }
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return libraryRevenue;
+    }
+
+    @Override
+    public List<StatisticalBook> DisplayTop5MostBorrowedBooks() {
+        List<StatisticalBook> statisticalBooks = new ArrayList<>();
+        try{
+            Connection connection = ConnectDB.openConnection();
+            CallableStatement call = connection.prepareCall("{call DisplayTop5MostBorrowedBooks()}");
+            ResultSet rs = call.executeQuery();
+            while (rs.next()){
+                Long id = rs.getLong("book_id");
+                String name = rs.getString("book_name");
+                int count = rs.getInt("count");
+                StatisticalBook statisticalBook = new StatisticalBook(id, name, count);
+                statisticalBooks.add(statisticalBook);
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return statisticalBooks;
     }
 }

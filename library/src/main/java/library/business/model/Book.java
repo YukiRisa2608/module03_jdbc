@@ -1,5 +1,6 @@
 package library.business.model;
 
+import library.business.util.Format;
 import library.business.util.InputMethods;
 import library.business.util.Validate;
 import lombok.AllArgsConstructor;
@@ -91,5 +92,23 @@ public class Book {
 
         //status. default true
         bookStatus = true;
+    }
+
+
+    @Override
+    public String toString() {
+        return String.format("%-20s%-20s%-20s%-20s%-20s%-20s%-20s%-20s%-20s",
+                bookId+"", bookName, bookTitle,
+                description, authorName, publishersName, Format.formatVND(price.doubleValue()), totalPages+"",
+                bookStatus ? "Available" : "UnAvailable"
+        );
+    }
+
+    public static String title() {
+        return String.format("%-20s%-20s%-20s%-20s%-20s%-20s%-20s%-20s%-20s",
+                "BOOK ID", "BOOK NAME", "BOOK TITLE",
+                "DESCRIPTION", "AUTHOR NAME", "PUBLISHER NAME", "PRICE", "TOTAL PAGE",
+                "STATUS"
+        );
     }
 }

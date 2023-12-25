@@ -1,10 +1,7 @@
 package library.present;
 
 import library.business.daoimpl.OderDaoImpl;
-import library.business.model.Book;
-import library.business.model.BookDto;
-import library.business.model.Oder;
-import library.business.model.OderDto;
+import library.business.model.*;
 import library.business.service.IBookService;
 import library.business.service.IOderService;
 import library.business.serviceImpl.BookServiceImpl;
@@ -73,13 +70,13 @@ public class LibraryManagement {
                     deleteBookById();
                     break;
                 case 11:
-                    //displayBooksBorrowedThisMonth();
+                    displayBooksBorrowedThisMonth();
                     break;
                 case 12:
-                    //displayLibraryRevenueThisYear();
+                    displayLibraryRevenueThisYear();
                     break;
                 case 13:
-                    //displayTop5MostBorrowedBooks();
+                    displayTop5MostBorrowedBooks();
                     break;
                 case 0:
                     System.exit(0);
@@ -91,7 +88,6 @@ public class LibraryManagement {
         }
     }
 
-
     //"""""""""""""METHODS""""""""""""""""""""
 
     //1. Display All Books
@@ -101,6 +97,7 @@ public class LibraryManagement {
         if (allBooks.isEmpty()) {
             System.out.println("No books available.");
         } else {
+            System.out.println(BookDto.title());
             for (BookDto book : allBooks) {
                 System.out.println(book);
             }
@@ -115,6 +112,7 @@ public class LibraryManagement {
             System.out.println("No available books.");
             return 0;
         } else {
+            System.out.println(BookDto.title());
             for (BookDto book : availableBooks) {
                 System.out.println(book);
             }
@@ -139,6 +137,7 @@ public class LibraryManagement {
         if (oderDtos.isEmpty()) {
             System.out.println("No books are borrowed.");
         } else {
+            System.out.println(OderDto.title());
             for (OderDto oder : oderDtos) {
                 System.out.println(oder);
             }
@@ -154,6 +153,7 @@ public class LibraryManagement {
             System.out.println("Not found book by id: " + id);
             return;
         }
+        System.out.println(Book.title());
         System.out.println(book);
     }
 
@@ -166,6 +166,8 @@ public class LibraryManagement {
             System.out.println("No books found matching with key word: " + keyword);
         } else {
             System.out.println("Books found:");
+
+            System.out.println(Book.title());
             for (BookDto book : result) {
                 System.out.println(book);
             }
@@ -274,6 +276,7 @@ public class LibraryManagement {
         }
 
         System.out.println("Current book details:");
+        System.out.println(Book.title());
         System.out.println(book);
         System.out.println("Enter new details for the book:");
         book.inputBook();
@@ -286,7 +289,30 @@ public class LibraryManagement {
         System.out.println("Enter book ID to delete:");
         Long bookId = InputMethods.getLong();
         bookService.delete(bookId);
-        System.out.println("Book deleted successfully.");
+//        System.out.println("Book deleted successfully.");
     }
 
+    //11. count book borrow this month
+    private static void displayBooksBorrowedThisMonth() {
+        List<StatisticalBook> statisticalBookList = oderService.statisticalBorrowBook();
+        System.out.println(StatisticalBook.title());
+        for (StatisticalBook  t: statisticalBookList){
+            System.out.println(t);
+        }
+    }
+
+    //12.cal revenue current year
+    private static void displayLibraryRevenueThisYear() {
+        LibraryRevenue  libraryRevenue = oderService.calRevenueCurrentYear();
+        System.out.println("Revenue Of Current Year: " + Format.formatVND(libraryRevenue.getLibrary_revenue().doubleValue()));
+    }
+
+    //13. display top 5 most borrow
+    private static void displayTop5MostBorrowedBooks() {
+        List<StatisticalBook> statisticalBookList = oderService.displayTop5MostBorrowedBooks();
+        System.out.println(StatisticalBook.title());
+        for (StatisticalBook b:statisticalBookList){
+            System.out.println(b);
+        }
+    }
 }
