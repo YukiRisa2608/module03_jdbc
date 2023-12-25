@@ -86,9 +86,30 @@ public class BookDaoImpl implements IBookDao {
     public void save(Book book) {
         Connection conn = ConnectDB.openConnection();
         CallableStatement call = null;
+        Book s = null;
         try {
+            CallableStatement callOldBook = conn.prepareCall("{call FindBookByName(?)}");
+            callOldBook.setString(1, book.getBookName());
+            ResultSet rs = callOldBook.executeQuery();
+            if (rs.next()){
+                s = new Book();
+                s.setBookId(rs.getLong("book_id"));
+                s.setBookName(rs.getString("book_name"));
+//                s.setBookTitle(rs.getString("book_title"));
+//                s.setDescription(rs.getString("description"));
+//                s.setAuthorName(rs.getString("author_name"));
+//                s.setPublishersName(rs.getString("publishers_name"));
+//                s.setPrice(rs.getBigDecimal("price"));
+//                s.setTotalPages(rs.getInt("total_pages"));
+//                s.setBookStatus(rs.getBoolean("book_status"));
+            }
+
             if (book.getBookId() == null) {
                 // chức năng thêm mới
+                if (book.getBookName().equals(s.getBookName())){
+                    System.out.println("Duplicate Book Name");
+                    return;
+                }
                 call = conn.prepareCall("{call AddNewBook(?, ?, ?, ?, ?, ?, ?)}");
                 call.setString(1, book.getBookName());
                 call.setString(2, book.getBookTitle());
@@ -99,6 +120,10 @@ public class BookDaoImpl implements IBookDao {
                 call.setInt(7, book.getTotalPages());
             } else {
                 // chức năng cập nhật
+                if (s != null &&  book.getBookId() != s.getBookId() && book.getBookName().equals(s.getBookName())){
+                    System.out.println("Duplicate Book Name");
+                    return;
+                }
                 call = conn.prepareCall("{call UpdateBookDetail(?, ?, ?, ?, ?, ?, ?, ?, ?)}");
                 call.setLong(1, book.getBookId());
                 call.setString(2, book.getBookName());
@@ -111,6 +136,7 @@ public class BookDaoImpl implements IBookDao {
                 call.setBoolean(9, book.isBookStatus());
             }
             call.executeUpdate();
+            System.out.println("Successfull!!");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -160,6 +186,35 @@ public class BookDaoImpl implements IBookDao {
             ConnectDB.closeConnection(conn);
         }
         return bookDtos;
+    }
+
+    @Override
+    public BookDto findBookByName(String bookName) {
+        Connection conn = ConnectDB.openConnection();
+        BookDto book = null;
+        try {
+            String storedProcedure = "{call FindBookByName(?)}";
+            CallableStatement call = conn.prepareCall(storedProcedure);
+            call.setString(1, bookName);
+            ResultSet rs = call.executeQuery();
+            if (rs.next()) {
+                book = new BookDto();
+                book.setBookId(rs.getLong("book_id"));
+                book.setBookName(rs.getString("book_name"));
+                book.setBookTitle(rs.getString("book_title"));
+                book.setDescription(rs.getString("description"));
+                book.setAuthorName(rs.getString("author_name"));
+                book.setPublishersName(rs.getString("publishers_name"));
+                book.setPrice(rs.getBigDecimal("price"));
+                book.setTotalPages(rs.getInt("total_pages"));
+                book.setBookStatus(rs.getBoolean("book_status"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            ConnectDB.closeConnection(conn);
+        }
+        return book;
     }
 
     @Override

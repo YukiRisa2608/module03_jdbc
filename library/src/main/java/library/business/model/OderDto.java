@@ -17,9 +17,8 @@ public class OderDto {
     private Long orderId;
     private String borrowerName;
     private Long bookId;
-    private LocalDateTime orderAt;
+    private String orderAt;
     private BigDecimal totalPrice;
     private int borrowTime;
     private boolean orderStatus;
-    private List<Long> borrowedBookIds;
 }

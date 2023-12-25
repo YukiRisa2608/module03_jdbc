@@ -4,4 +4,5 @@ import library.business.model.Oder;
 import library.business.model.OderDto;
 
 public interface IOderDao extends IGenericDao <OderDto, Oder, Long> {
+    OderDto getOrderDetails(Oder order);
 }

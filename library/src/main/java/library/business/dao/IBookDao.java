@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface IBookDao extends IGenericDao<BookDto, Book, Long> {
     List<BookDto> searchBooks(String keyword);
+    BookDto findBookByName(String bookName);
     List<BookDto> getAvailableBooks();
     boolean isBookAvailableForBorrow(Long bookId);
 }
