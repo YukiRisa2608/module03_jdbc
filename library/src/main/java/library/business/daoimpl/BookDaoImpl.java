@@ -151,6 +151,7 @@ public class BookDaoImpl implements IBookDao {
             CallableStatement call = conn.prepareCall("{call DeleteBook(?)}");
             call.setLong(1, id);
             call.executeUpdate();
+            System.out.println("Successfull!!");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {

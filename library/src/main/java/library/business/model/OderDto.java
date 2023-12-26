@@ -35,7 +35,7 @@ public class OderDto {
     public static String title() {
         return String.format("%-20s%-20s%-20s%-20s%-20s%-20s%-20s",
                 "ORDER ID", "BORROWER NAME", "BOOK ID",
-                "ORDER AT", "TOTAL PRICE", "BORROW TIME",
+                "ORDER AT", "TOTAL PRICE ($)", "BORROW TIME",
                 "STATUS"
         );
     }

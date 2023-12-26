@@ -20,7 +20,8 @@ public class LibraryManagement {
 
     public static void main(String[] args) {
         while (true) {
-            System.out.println("=======================MENU=======================");
+            System.out.println();
+            System.out.println("=============MENU LIBRARY MANAGEMENT============");
             System.out.println("1. Display All Books");
             System.out.println("2. Display All Available books");
             System.out.println("3. Display All Orders");
@@ -159,7 +160,7 @@ public class LibraryManagement {
 
     //5. Search book by key word
     private static void searchBookByKeyWord() {
-        System.out.println("Enter Title, Author, or any Keywords to search:");
+        System.out.println("Enter Book Name, Title, Author, or any Keywords to search:");
         String keyword = InputMethods.getString();
         List<BookDto> result = bookService.searchBooks(keyword);
         if (result.isEmpty()) {
@@ -195,7 +196,12 @@ public class LibraryManagement {
         do {
             System.out.println("Enter book ID to borrow: ");
             bookId = InputMethods.getLong();
+
+            if (bookId == null || !bookService.isBookAvailableForBorrow(bookId)) {
+                System.err.println("Book not available for borrowing. Please enter an other book ID.");
+            }
         } while (bookId == null || !bookService.isBookAvailableForBorrow(bookId));
+
 
         // Step 3: Create Order
         Oder order = new Oder();
@@ -213,6 +219,7 @@ public class LibraryManagement {
 
     }
 
+    // #Oder details
     private static void displayOrderDetails(OderDto order) {
         if (order == null) {
             System.err.println("No oder to display");
@@ -221,13 +228,14 @@ public class LibraryManagement {
         Long orderId = order.getOrderId();
         if (orderId == null) {
             System.err.println("Order ID is null");
-        } else {
-            System.out.println("Order ID: " + orderId);
         }
-        System.out.println("------ Order Details ------");
+//        else {
+//            System.out.println("Order ID: " + orderId);
+//        }
+        System.out.println("------ ORDER DETAILS ------");
         System.out.println("Order ID: " + order.getOrderId());
         System.out.println("Borrower Name: " + order.getBorrowerName());
-        System.out.println("Borrowed Book: " + order.getBookId());
+        System.out.println("Borrowed Book ID: " + order.getBookId());
         System.out.println("Order At: " + order.getOrderAt());
         System.out.println("Order Status: " + (order.isOrderStatus() ? "Paid" : "Unpaid"));
         if (order.isOrderStatus()){
