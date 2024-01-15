@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.*;
 import com.example.demo.model.Post;
 import com.example.demo.service.IPostService;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
+
 @Controller
 //@RequestMapping("/post")
 public class PostController {
@@ -16,7 +21,8 @@ public class PostController {
     public String home(Model model){
         System.out.println("Controller is called");
         // lấy ra danh sách bài đăng và gửi nó đến view
-        model.addAttribute("list",postService.findAllPost());
+        List<Post> list= postService.findAllPost();
+        model.addAttribute("list",list);
         return "home";
     }
 
@@ -30,7 +36,10 @@ public class PostController {
     //@PostMapping để xử lý dữ liệu được gửi từ form khi người dùng nhấn nút "Post".
     @PostMapping("/addPost")
     public String addPost(@ModelAttribute Post post, Model model) {
-        // Thêm post vào cơ sở dữ liệu
+        // Thêm post vào cơ sở dữ liệu\
+//        Date currentDate = Calendar.getInstance(TimeZone.getDefault()).getTime();
+//        post.setCreatedDate(currentDate);
+//        System.out.println(currentDate);
         postService.addPost(post);
 
         return "redirect:/home";
@@ -48,6 +57,8 @@ public class PostController {
     @PostMapping("/updatePost")
     public String updatePost(@ModelAttribute Post post, Model model113) {
         // edit bai post theo id
+//        Date currentDate = Calendar.getInstance(TimeZone.getDefault()).getTime();
+//        post.setCreatedDate(currentDate);
         postService.editPost(post);
 
         // Chuyển hướng đến trang home

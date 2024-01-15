@@ -46,7 +46,7 @@
     <c:forEach items="${list}" var="post">
         <div class="card w-100 my-3">
 <%--            <p class="fs-6"><fmt:formatDate value="${post.createdDate}" pattern="dd/MM/yyyy - HH:mm"/></p>--%>
-            <h1 class="fs-6">${post.createdDate}</h1>
+            <h1 class="fs-6"><fmt:formatDate value="${post.createdDate}" pattern="yyyy-MM-dd HH:mm:ss" /></h1>
             <img src="${post.imageUrl}" class="card-img-top img-thumbnail w-50" alt="...">
             <div class="card-body">`
                 <h5 class="card-title">${post.title}</h5>
@@ -83,10 +83,6 @@
                                 <div class="form-group">
                                     <label>Image URL</label>
                                     <input type="text" class="form-control" name="imageUrl" value="${post.imageUrl}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Date</label>
-                                    <input type="date" class="form-control" name="createdDate" value="${post.createdDate}" required>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -125,10 +121,6 @@
                     <div class="form-group">
                         <label>Image URL</label>
                         <input type="text" class="form-control" name="imageUrl" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Date</label>
-                        <input type="date" class="form-control" name="createdDate" required>
                     </div>
                 </div>
                 <div class="modal-footer">

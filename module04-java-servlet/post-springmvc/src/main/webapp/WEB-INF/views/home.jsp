@@ -45,17 +45,55 @@
     </nav>
     <c:forEach items="${list}" var="post">
         <div class="card w-100 my-3">
-            <div>
-            <p class="fs-6"><fmt:formatDate value="${post.createdDate}" pattern="dd/MM/yyyy - HH:mm"/></p>
-            <button type="button" class="btn btn-danger">Delete</button>
-            <button type="button" class="btn btn-warning">Edit</button>
-            </div>
-<%--            <p class="fs-6"> value="${post.createdDate}"/></p>--%>
-            <img src="${post.imageUrl}" class="card-img-top" alt="..." width="300" height="200">
-            <div class="card-body">
-                <h5 class="card-title">${post.title}</h5>
+                <%--            <p class="fs-6"><fmt:formatDate value="${post.createdDate}" pattern="dd/MM/yyyy - HH:mm"/></p>--%>
+            <h1 class="fs-6"><fmt:formatDate value="${post.createdDate}" pattern="yyyy-MM-dd HH:mm:ss" /></h1>
+            <img src="${post.imageUrl}" class="card-img-top img-thumbnail w-50" alt="...">
+            <div class="card-body">`
+                <h3 class="card-title">${post.title}</h3>
                 <p class="card-text">${post.content}</p>
                 <span class="btn btn-success">${post.author}</span>
+            </div>
+            <form action="<%=request.getContextPath()%>/delete" method="post">
+                <input type="hidden" name="id"  value="${post.id}">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+            <div>
+                <a href="#editEmployeeModal" class="btn btn-warning w-20" data-toggle="modal"> <span>Edit</span></a>
+            </div>
+            <div id="editEmployeeModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form action="<%=request.getContextPath()%>/updatePost" method="post">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Update Post</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" name="id"  value="${post.id}">
+                                <div class="form-group">
+                                    <label>Author</label>
+                                    <input type="text" name="author" class="form-control" value="${post.author}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Title</label>
+                                    <input type="text" name="title" class="form-control" value="${post.title}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Content</label>
+                                    <textarea class="form-control" name="content" required> ${post.content} </textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Image URL</label>
+                                    <input type="text" class="form-control" name="imageUrl" value="${post.imageUrl}" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                <input type="submit" class="btn btn-success" value="Edit">
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </c:forEach>
@@ -85,10 +123,6 @@
                     <div class="form-group">
                         <label>Image URL</label>
                         <input type="text" class="form-control" name="imageUrl" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Date</label>
-                        <input type="date" class="form-control" name="createdDate" required>
                     </div>
                 </div>
                 <div class="modal-footer">

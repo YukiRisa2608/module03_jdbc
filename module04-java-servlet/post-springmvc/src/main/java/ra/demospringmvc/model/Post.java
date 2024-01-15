@@ -12,6 +12,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Post {
     private Integer id;
     private String author,title,content,imageUrl;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdDate;
 }

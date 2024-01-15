@@ -28,7 +28,7 @@ public class PostDaoImpl implements IPostDao {
                 p.setAuthor(rs.getString("author"));
                 p.setContent(rs.getString("content"));
                 p.setImageUrl(rs.getString("imageUrl"));
-                p.setCreatedDate(rs.getDate("createdAt"));
+                p.setCreatedDate(rs.getTimestamp("createdAt"));
                 list.add(p);
             }
         } catch (SQLException e) {
@@ -55,7 +55,7 @@ public class PostDaoImpl implements IPostDao {
                 p.setAuthor(rs.getString("author"));
                 p.setContent(rs.getString("content"));
                 p.setImageUrl(rs.getString("imageUrl"));
-                p.setCreatedDate(rs.getDate("createdAt"));
+                p.setCreatedDate(rs.getTimestamp("createdAt"));
 
                 list.add(p);
             }
@@ -69,11 +69,11 @@ public class PostDaoImpl implements IPostDao {
 
     @Override
     public void addPost(Post post) {
-        if (post == null || post.getCreatedDate() == null) {
+        if (post == null) {
             // In ra giá trị của createdDate để kiểm tra
-            System.out.println("Created Date: " + post.getCreatedDate());
+//            System.out.println("Created Date: " + post.getCreatedDate());
 
-            throw new IllegalArgumentException("Post or its createdDate cannot be null");
+            throw new IllegalArgumentException("Post cannot be null");
         }
         // mở kết nối
         Connection conn = ConnectDB.openConnection();
@@ -84,7 +84,7 @@ public class PostDaoImpl implements IPostDao {
             callSt.setString(2, post.getAuthor());
             callSt.setString(3, post.getContent());
             callSt.setString(4, post.getImageUrl());
-            callSt.setDate(5,new Date(new java.util.Date().getTime()));
+            callSt.setTimestamp(5, new Timestamp(new java.util.Date().getTime()));
 
             callSt.executeUpdate();
 

@@ -37,4 +37,23 @@ public class PostController {
         return "redirect:/home";
     }
 
+    //Delete
+    @PostMapping("/delete")
+    public String deleteItem(@ModelAttribute Post post, Model model) {
+        // xoa bai post theo id
+        postService.deletePost(post.getId());
+
+        // Chuyển hướng đến trang home
+        return "redirect:/home";
+    }
+
+    //Edit
+    @PostMapping("/updatePost")
+    public String updatePost(@ModelAttribute Post post, Model model113) {
+        // edit bai post theo id
+        postService.editPost(post);
+
+        // Chuyển hướng đến trang home
+        return "redirect:/home";
+    }
 }
