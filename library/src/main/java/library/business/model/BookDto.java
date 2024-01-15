@@ -25,7 +25,7 @@ public class BookDto {
         return String.format("%-20s%-20s%-20s%-20s%-20s%-20s%-20s%-20s%-20s",
                 bookId+"", bookName, bookTitle,
                 description, authorName, publishersName, Format.formatVND(price.doubleValue()), totalPages+"",
-                bookStatus ? "Available" : "UnAvailable"
+                bookStatus ? "Available" : "Not Available"
         );
     }
 

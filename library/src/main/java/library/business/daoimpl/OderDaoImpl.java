@@ -31,14 +31,14 @@ public class OderDaoImpl implements IOderDao {
             ResultSet rs = callableStatement.executeQuery();
             while (rs.next()) {
                 Long orderId = rs.getLong(1);
-                String borrwer_name = rs.getString(2);
+                String borrower_name = rs.getString(2);
                 Long bookId = rs.getLong(3);
                 String order_at = Format.convertToDateformat(rs.getDate(4));
                 BigDecimal total_price = rs.getBigDecimal(5);
                 int borrow_time = rs.getInt(6);
                 boolean order_status = rs.getBoolean(7);
 
-                orderDtos.add(new OderDto(orderId, borrwer_name, bookId, order_at, total_price, borrow_time, order_status));
+                orderDtos.add(new OderDto(orderId, borrower_name, bookId, order_at, total_price, borrow_time, order_status));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

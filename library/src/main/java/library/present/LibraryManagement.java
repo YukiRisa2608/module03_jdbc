@@ -130,7 +130,7 @@ public class LibraryManagement {
             System.out.println("1. Paid");
             status = InputMethods.getByte();
             if (status != 0 && status != 1) {
-                System.out.println("status must be 0 or 1");
+                System.out.println("Status must be 0 or 1");
             }
         } while (status != 0 && status != 1);
         System.out.println("------ Display All Orders ------");
@@ -147,11 +147,11 @@ public class LibraryManagement {
 
     //4. Find book by id
     private static void findBookById() {
-        System.out.println("Enter book id to find: ");
+        System.out.println("Enter book ID to find: ");
         Long id = InputMethods.getLong();
         Book book = bookService.findById(id);
         if (book == null) {
-            System.out.println("Not found book by id: " + id);
+            System.err.println("Not found book by id: " + id);
             return;
         }
         System.out.println(Book.title());
@@ -164,7 +164,7 @@ public class LibraryManagement {
         String keyword = InputMethods.getString();
         List<BookDto> result = bookService.searchBooks(keyword);
         if (result.isEmpty()) {
-            System.out.println("No books found matching with key word: " + keyword);
+            System.err.println("No books found matching with key word: " + keyword);
         } else {
             System.out.println("Books found:");
 
@@ -246,7 +246,7 @@ public class LibraryManagement {
 
     //7. Return Book
     private static void returnBook() {
-        System.out.println("ENter order id: ");
+        System.out.println("Enter order ID: ");
         Long orderId = InputMethods.getLong();
         Oder order = new Oder();
         order.setOrderId(orderId);
@@ -276,10 +276,10 @@ public class LibraryManagement {
         Long bookId = InputMethods.getLong();
         Book book = bookService.findById(bookId);
         if (book == null) {
-            System.out.println("Book not found by ID: " + bookId);
+            System.err.println("Book not found by ID: " + bookId);
             return;
         }else if (!book.isBookStatus()){
-            System.out.println("book have been borrowed");
+            System.err.println("Book has been borrowed. Cannot edit");
             return;
         }
 

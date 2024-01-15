@@ -14,7 +14,7 @@ public class ConnectDB {
     public static Connection openConnection(){
         Connection conn ;
         try {
-            Class.forName(DRIVER) ; // khai bao Driver
+            Class.forName(DRIVER) ;
             conn = DriverManager.getConnection(URL,USERNAME,PASSWORD);
             return conn;
         } catch (ClassNotFoundException | SQLException e) {

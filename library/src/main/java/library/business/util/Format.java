@@ -16,37 +16,27 @@ public class Format {
                 Date date =  spf.parse(str);
                 return date;
             } catch (ParseException e) {
-                System.err.println("Định dạng không hợp lệ");
+                System.err.println("Invalid format!");
             }
         }
     }
 
+    //Format date
     public static String convertToLocalDateFormat(LocalDateTime dateTime) {
-        // Định dạng mong muốn: dd/MM/yyyy
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-        // Chuyển đổi LocalDateTime thành chuỗi theo định dạng
         String formattedDate = dateTime.format(formatter);
-
         return formattedDate;
     }
 
     public static String convertToDateformat(Date date) {
-        // Định dạng mong muốn: dd/MM/yyyy
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-        // Chuyển đổi Date thành chuỗi theo định dạng
         String formattedDate = dateFormat.format(date);
-
         return formattedDate;
     }
 
-    //  định dạng tiền tệ VND
+    //  Format VND
     public static String formatVND(double amount) {
-        // Tạo đối tượng NumberFormat cho tiền tệ Việt Nam
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US);
-
-        // Format số tiền và trả về chuỗi kết quả
         return currencyFormatter.format(amount);
     }
 
