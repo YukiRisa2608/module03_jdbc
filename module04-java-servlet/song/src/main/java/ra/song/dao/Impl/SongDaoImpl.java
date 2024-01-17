@@ -74,7 +74,34 @@ public class SongDaoImpl implements ISongDao {
         return list;
     }
 
-//Get song by ID
+//display song where status is true
+    @Override
+    public List<Song> getMusicList() {
+        List<Song> list = new ArrayList<>();
+        Connection conn = ConnectDB.openConnection();
+        try {
+            CallableStatement callSt = conn.prepareCall("SELECT * FROM songs WHERE status = 1");
+            ResultSet rs = callSt.executeQuery();
+            while (rs.next()) {
+                Song song = new Song();
+                song.setSongName(rs.getString("song_name"));
+                song.setAuthor(rs.getString("author"));
+                song.setDescription(rs.getString("description"));
+                song.setImageUrl(rs.getString("image_url"));
+                song.setVideoUrl(rs.getString("video_url"));
+                song.setDuration(rs.getInt("duration"));
+                list.add(song);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            ConnectDB.closeConnection(conn);
+        }
+        return list;
+    }
+
+
+    //Get song by ID
     @Override
     public Song getSongById(String id) {
         Song song = null;

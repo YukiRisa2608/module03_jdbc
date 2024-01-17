@@ -43,4 +43,9 @@ public class SongServiceImpl implements ISongService {
     public List<Song> searchSongsByKeyWord(String keyword) {
         return songDao.searchSongsByKeyWord(keyword);
     }
+
+    @Override
+    public List<Song> getMusicList() {
+        return songDao.getMusicList();
+    }
 }

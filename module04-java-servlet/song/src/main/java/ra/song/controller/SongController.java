@@ -47,12 +47,14 @@ public class SongController {
         return "addSong";
     }
 
+    //add song method
     @PostMapping("/addSong")
     public String addSong(@ModelAttribute Song song) {
         songService.addSong(song);
         return "redirect:/home";
     }
 
+    //edit form
     @GetMapping("/editSongForm/{id}")
     public String showEditSongForm(@PathVariable String id, Model model) {
         Song song = songService.getSongById(id);
@@ -60,11 +62,20 @@ public class SongController {
         return "editSong";
     }
 
+    //edit method
     @PostMapping("/editSong")
     public String editSong(@ModelAttribute Song song) {
         songService.updateSong(song);
         return "redirect:/home";
     }
+
+    @GetMapping("/musicPlay")
+    public String music(Model model) {
+        List<Song> musicList = songService.getMusicList(); // Lấy danh sách bài hát có trạng thái true
+        model.addAttribute("musicList", musicList);
+        return "musicPlay";
+    }
+
 
 //@GetMapping được sử dụng để ánh xạ phương thức xử lý yêu cầu GET đến một URL cụ thể,
 //@PathVariable được sử dụng để trích xuất giá trị từ biến đường dẫn trong URL và sử dụng chúng trong phương thức xử lý yêu cầu.

@@ -7,6 +7,7 @@ import java.util.List;
 public interface ISongDao {
     List<Song> getAllSongs();
     List<Song> searchSongsByKeyWord(String query);
+    List<Song> getMusicList();
     Song getSongById(String id);
     void addSong(Song song);
     void updateSong(Song song);
