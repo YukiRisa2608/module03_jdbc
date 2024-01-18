@@ -6,9 +6,10 @@
 </head>
 <body>
 <h1>${message}</h1>
+<a href="${pageContext.request.contextPath}/musicPlay">Home</a>
 <%--${pageContext.request.contextPath} là một biểu thức EL (Expression Language) trong JSP thường được sử dụng để lấy đường dẫn gốc của ứng dụng web.nó không thay đổi trong quá trình chạy ứng dụng.--%>
 <%--Tên "addSongForm" không cần phải giống tên của trang view, nhưng nó cần phải trùng khớp với URL đã ánh xạ trong controller.--%>
-<a href="${pageContext.request.contextPath}/addSongForm">Thêm bài hát mới</a>
+<a href="${pageContext.request.contextPath}/addSongForm">Add New Song</a>
 <h2>Danh sách bài hát:</h2>
 <c:if test="${not empty songs}">
     <ul>

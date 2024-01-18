@@ -69,6 +69,7 @@ public class SongController {
         return "redirect:/home";
     }
 
+    //display music list
     @GetMapping("/musicPlay")
     public String music(Model model) {
         List<Song> musicList = songService.getMusicList(); // Lấy danh sách bài hát có trạng thái true
@@ -76,7 +77,16 @@ public class SongController {
         return "musicPlay";
     }
 
+    //search
+    @GetMapping("/search")
+    public String searchSongs(@RequestParam("query") String query, Model model) {
+        List<Song> searchResults = songService.searchSongsByKeyWord(query);
+        model.addAttribute("musicList", searchResults);
+        return "musicPlay";
+    }
 
+//@ModelAttribute: Được sử dụng để bind dữ liệu từ request (thường là HTTP POST request) vào một đối tượng model. Annotation này thường được sử dụng trong các form submission hoặc khi dữ liệu được gửi từ client.
+//@PathVariable: Được sử dụng để lấy giá trị từ URI (Uniform Resource Identifier) trong một HTTP request. Thường được sử dụng trong RESTful web services, nơi URI chứa các tham số.
 //@GetMapping được sử dụng để ánh xạ phương thức xử lý yêu cầu GET đến một URL cụ thể,
 //@PathVariable được sử dụng để trích xuất giá trị từ biến đường dẫn trong URL và sử dụng chúng trong phương thức xử lý yêu cầu.
 

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: 東芝
@@ -13,6 +14,10 @@
 <body>
 <a href="/home">Management Page</a>
 <h1>Danh sách bài hát nghe nhạc:</h1>
+<form action="/search" method="get">
+    <input type="text" name="query" placeholder="Tìm kiếm bài hát...">
+    <button type="submit">Tìm kiếm</button>
+</form>
 <c:if test="${not empty musicList}">
     <ul>
         <c:forEach items="${musicList}" var="song">
@@ -27,7 +32,6 @@
         </c:forEach>
     </ul>
 </c:if>
-
 <c:if test="${empty musicList}">
     <p>Không có bài hát nào.</p>
 </c:if>
