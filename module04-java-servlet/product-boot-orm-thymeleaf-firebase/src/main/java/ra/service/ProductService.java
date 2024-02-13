@@ -26,8 +26,13 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    //Tìm kiếm sản phẩm theo keyword
+    public List<Product> searchProduct(String keyword){
+        return productRepository.findAllByProductNameContainingIgnoreCase(keyword);
+    }
+
     // Tìm kiếm phẩm theo ID
-    public Product getProductById(Integer id) {
+    public Product getProductById(Long id) {
         return productRepository.findById(id).orElse(null);
     }
 
@@ -37,8 +42,9 @@ public class ProductService {
     }
 
     // Xóa sản phẩm
-    public void deleteProduct(Integer id) {
+    public void deleteProduct(Long id) {
         productRepository.deleteById(id);
     }
+
 }
 

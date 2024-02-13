@@ -1,59 +1,81 @@
 package ra.controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ra.model.Category;
+import ra.model.Product;
 import ra.service.CategoryService;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/categories")
+@RequestMapping("categories")
 public class CategoryController {
-    private final CategoryService categoryService;
-
     @Autowired
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
-
-    // Hiển thị danh sách tất cả danh mục
+    CategoryService categoryService;
     @GetMapping
-    public String getAllCategories(Model model) {
+    public String categoryManagement(Model model) {
         List<Category> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
-        return "category/list"; // Điều hướng đến trang hiển thị danh sách danh mục (category/list-product.html)
+        return "category/list-categories";
     }
 
     // Hiển thị form thêm danh mục
     @GetMapping("/add")
     public String showAddCategoryForm(Model model) {
         model.addAttribute("category", new Category());
-        return "category/add"; // Điều hướng đến trang thêm danh mục (category/add.html)
+        return "category/add-category";
     }
 
     // Xử lý thêm danh mục
     @PostMapping("/add")
     public String addCategory(@ModelAttribute("category") Category category) {
         categoryService.addCategory(category);
-        return "redirect:/categories"; // Điều hướng đến trang danh sách danh mục sau khi thêm
+        return "redirect:/categories";
     }
 
-    // Hiển thị form cập nhật danh mục
-    @GetMapping("/update/{id}")
-    public String showUpdateCategoryForm(@PathVariable("id") Integer id, Model model) {
-        Category category = categoryService.getCategoryById(id);
+    //Delete category
+    @GetMapping("/delete/{id}")
+    public String deleteCategory(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        if (categoryService.deleteCategoryIfNoProducts(id)) {
+            redirectAttributes.addFlashAttribute("successMessage", "Category deleted successfully!");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Cannot delete category cause contains products.");
+        }
+        return "redirect:/categories";
+    }
+
+    //Display Form Edit category
+    @GetMapping("/edit/{id}")
+    public String showEditCategoryForm(@PathVariable Long id, Model model) {
+        Category category = categoryService.findById(id);
         model.addAttribute("category", category);
-        return "category/update"; // Điều hướng đến trang cập nhật danh mục (category/update.html)
+        return "category/edit-category";
     }
 
-    // Xử lý cập nhật danh mục
-    @PostMapping("/update/{id}")
-    public String updateCategory(@PathVariable("id") Integer id, @ModelAttribute("category") Category category) {
+    //Edit category
+    @PostMapping("/edit/{id}")
+    public String updateCategory(@PathVariable Long id, @ModelAttribute("category") Category category, RedirectAttributes redirectAttributes) {
         category.setId(id);
         categoryService.updateCategory(category);
-        return "redirect:/categories"; // Điều hướng đến trang danh sách danh mục sau khi cập nhật
+        redirectAttributes.addFlashAttribute("successMessage", "Category updated successfully!");
+        return "redirect:/categories";
     }
+
+    //Display or not
+    @GetMapping("/status/{id}")
+    public String showOrHideCategory(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            categoryService.showOrHideCategory(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Category visibility toggled successfully!");
+        } catch (EntityNotFoundException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Category not found");
+        }
+        return "redirect:/categories";
+    }
+
 }

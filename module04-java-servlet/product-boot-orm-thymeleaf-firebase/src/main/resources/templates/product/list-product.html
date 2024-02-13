@@ -3,8 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.css" rel="stylesheet" />
 </head>
-<body>
-
+<body class="container row justify-content-center">
+<h1>List Products Management</h1>
+<div class="container">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Product ID</th>
+            <th>Image</th>
+            <th>Product Name</th>
+            <th>Category ID</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Status</th>
+            <th>Created Date</th>
+            <th>Last Update</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.id}">Product ID</td>
+            <td>
+                <img th:src="@{${product.imgUrl}}" src="https://mdbcdn.b-cdn.net/img/new/standard/nature/184.webp" class="img-fluid" alt="Product Image" style="width: 100px; height: auto;">
+            </td>
+            <td th:text="${product.productName}">Product Name</td>
+            <td th:text="${product.getCategory().id}">Category ID</td>
+            <td th:text="${product.description}">Description</td>
+            <td th:text="${product.quantity}">Quantity</td>
+            <td th:text="${product.status}">Status</td>
+            <td th:text="${product.getCreatedDate()}">Created Date</td>
+            <td th:text="${product.getLastUpdated()}">Last Update</td>
+            <td th:text="${product.status}">Action</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.umd.min.js"></script>
 </html>

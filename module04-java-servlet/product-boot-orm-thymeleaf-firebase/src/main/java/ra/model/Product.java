@@ -4,16 +4,22 @@ import jakarta.persistence.*;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+
+import static jakarta.persistence.TemporalType.TIMESTAMP;
 
 @Entity
 @Data
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -32,14 +38,19 @@ public class Product {
     @Min(1)
     private Integer quantity;
 
-    @NotBlank
+    //@NotBlank
     private String classification;
 
-    @NotNull
     private Boolean status;
 
-    @DateTimeFormat(pattern = "dd MM yyyy")
-    @PastOrPresent
+    private String imgUrl;
+
+    @UpdateTimestamp
+    @Temporal(TIMESTAMP)
     private LocalDateTime lastUpdated;
+
+    @CreationTimestamp
+    @Temporal(TIMESTAMP)
+    private LocalDateTime createdDate;
 }
 
