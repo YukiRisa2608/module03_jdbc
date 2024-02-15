@@ -11,8 +11,57 @@
 <h1 class="text-center">Product Home Page</h1>
 <a th:href="@{/admin/login}">Go Admin Page</a>
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-3 mt-2 mb-2">
+    <div class="row justify-content-center mt-3 mb-3">
+        <div class="col-md-4">
+            <div class="row">
+<!--                <div class="col-md-6 ml-2">-->
+<!--                    <div class="dropdown">-->
+<!--                        <button-->
+<!--                                class="btn btn-primary dropdown-toggle"-->
+<!--                                type="button"-->
+<!--                                id="dropdownMenu1"-->
+<!--                                data-mdb-dropdown-init-->
+<!--                                data-mdb-ripple-init aria-expanded="false">-->
+<!--                            Filter by Category-->
+<!--                        </button>-->
+<!--                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">-->
+<!--                            <li><button class="dropdown-item" type="button">Action</button></li>-->
+<!--                            <li><button class="dropdown-item" type="button">Another action</button></li>-->
+<!--                            <li><button class="dropdown-item" type="button">Something else here</button></li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+<!--                </div>-->
+                <div class="col-md-6 ml-2">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuCategory" data-bs-toggle="dropdown" aria-expanded="false">
+                            Filter by Category
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuCategory">
+                            <li th:each="category : ${categories}" >
+                                <a th:href="@{/filter(categoryId=${category.id})}" th:text="${category.name}" class="dropdown-item"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6 ml-2">
+                    <div class="dropdown">
+                        <button
+                                class="btn btn-primary dropdown-toggle"
+                                type="button"
+                                id="dropdownMenu2"
+                                data-mdb-dropdown-init
+                                data-mdb-ripple-init aria-expanded="false">
+                            Sort by Price
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="/sort?sort=asc" class="dropdown-item">Price Ascending</a>
+                            <a href="/sort?sort=desc" class="dropdown-item">Price Descending</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
             <form th:action="@{/search}">
                 <div class="input-group">
                     <div class="form-outline" data-mdb-input-init>
@@ -37,7 +86,7 @@
                         <div class="row">
                             <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
                                 <div class="bg-image hover-zoom ripple rounded ripple-surface">
-                                    <img th:src="@{${product.imgUrl}}" class="w-100"/>
+                                    <img th:src="@{${product.imgUrl}}" class="w-100 h-100"/>
                                     <a href="#!">
                                         <div class="hover-overlay">
                                             <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
@@ -46,7 +95,6 @@
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-6 col-xl-6">
-                                <!--<h6 class="card-title"><strong th:text="${product.productName}">Product Name</strong></h6>-->
                                 <h5 th:text="${product.productName}"></h5>
                                 <div class="d-flex flex-row">
                                     <div class="text-danger mb-1 me-2">
@@ -55,12 +103,10 @@
                                         <i class="fa fa-star"></i>
                                         <i class="fa fa-star"></i>
                                     </div>
-<!--                                    <span>1000</span>-->
                                 </div>
                                 <div class="mt-1 mb-0 text-muted small">
                                     <span th:text="${product.getCategory().getCategoryName()}"></span>
                                 </div>
-                                <p th:text="${product.description}" class="text-truncate mb-4 mb-md-0"></p>
                                 <button th:text="${product.status} ? 'Available' : 'Unavailable'" class="text-truncate mb-4 mb-md-0 btn btn-primary btn-sm" type="button"></button>
 
                             </div>
@@ -71,7 +117,8 @@
                                 </div>
                                 <h6 class="text-success">Free shipping</h6>
                                 <div class="d-flex flex-column mt-4">
-                                    <button class="text-truncate mb-4 mb-md-0 btn btn-primary btn-sm" type="button">View Detail</button>
+                                        <a th:href="@{'/detail/' + ${product.id}}" class="btn btn-primary btn-sm" role="button">View Detail</a>
+<!--                                    <button class="text-truncate mb-4 mb-md-0 btn btn-primary btn-sm" type="button">View Detail</button>-->
 <!--                                    <button class="btn btn-outline-primary btn-sm mt-2" type="button">-->
 <!--                                        Add to wishlist-->
 <!--                                    </button>-->

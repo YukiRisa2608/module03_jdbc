@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ra.dao.CategoryRepostory;
 import ra.dao.ProductReponsitory;
 import ra.model.Category;
+import ra.model.Product;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,8 +34,12 @@ public class CategoryService {
         return categoryRepository.findById(id).orElse(null);
     }
 
-    // Cập nhật danh mục
+    //Tìm kiếm category theo keyword
+    public List<Category> searchCategory(String keyword){
+        return categoryRepository.findAllByCategoryNameContainingIgnoreCase(keyword);
+    }
 
+    // Cập nhật danh mục
     public void updateCategory(Category updatedCategory) {
         Category category = categoryRepository.findById(updatedCategory.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + updatedCategory.getId()));
@@ -45,8 +50,6 @@ public class CategoryService {
         categoryRepository.save(category);
     }
 
-
-
     // Xóa danh mục
     public boolean deleteCategoryIfNoProducts(Long categoryId) {
         // Kiểm tra xem có sản phẩm nào thuộc về danh mục này không
@@ -55,12 +58,6 @@ public class CategoryService {
         }
         categoryRepository.deleteById(categoryId);
         return true;
-    }
-
-    //Find by ID
-    public Category findById(Long id) {
-        Optional<Category> category = categoryRepository.findById(id);
-        return category.orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + id));
     }
 
     public void showOrHideCategory(Long id) {

@@ -46,5 +46,18 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
+    //Order by
+    public List<Product> findAllByOrderByPriceAsc() {
+        return productRepository.findAllByOrderByPriceAsc();
+    }
+
+    public List<Product> findAllByOrderByPriceDesc() {
+        return productRepository.findAllByOrderByPriceDesc();
+    }
+    //find product by category
+    public List<Product> findByCategoryId(Long categoryId) {
+        return productRepository.findByCategoryId(categoryId);
+    }
+
 }
 

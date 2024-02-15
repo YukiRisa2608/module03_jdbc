@@ -52,7 +52,7 @@ public class CategoryController {
     //Display Form Edit category
     @GetMapping("/edit/{id}")
     public String showEditCategoryForm(@PathVariable Long id, Model model) {
-        Category category = categoryService.findById(id);
+        Category category = categoryService.getCategoryById(id);
         model.addAttribute("category", category);
         return "category/edit-category";
     }
@@ -78,4 +78,11 @@ public class CategoryController {
         return "redirect:/categories";
     }
 
+    //search
+    @GetMapping("/search")
+    public String searchCategory(@RequestParam(name = "keyword") String keyword, Model model) {
+        List<Category> searchResult = categoryService.searchCategory(keyword);
+        model.addAttribute("categories", searchResult);
+        return "category/list-categories";
+    }
 }

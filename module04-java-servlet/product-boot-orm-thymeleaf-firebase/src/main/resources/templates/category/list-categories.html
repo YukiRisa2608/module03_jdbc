@@ -9,9 +9,37 @@
 </head>
 <body>
 <div class="container">
-    <div class="row text-center">
-        <div class="col-md-6 mt-3 mb-3">
-            <h5>Categories Management</h5>
+    <div class="row mb-2 justify-content-center">
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <h1>Categories Management</h1>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <!-- Liên kết quản lý category -->
+                <a th:href="@{/products}" class="btn btn-primary">Product Management</a>
+            </div><div class="col-auto">
+            <!-- Liên kết home page -->
+            <a th:href="@{/home}" class="btn btn-primary">Go Home Page</a>
+        </div>
+            <div class="col-auto">
+                <form th:action="@{/categories/search}">
+                    <div class="input-group">
+                        <div class="form-outline" data-mdb-input-init>
+                            <input type="search" id="form1" name="keyword" class="form-control" />
+                            <label class="form-label" for="form1">Search</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary" data-mdb-ripple-init>
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-9 mt-3 mb-3 text-center">
             <ul class="list-group list-group-light">
                 <a th:href="@{/categories/add}" class="btn btn-success" data-mdb-ripple-init>Add New Category +</a>
                 <li th:each="category : ${categories}" class="list-group-item px-3 border-0 rounded-3 list-group-item-primary mb-2">
