@@ -9,14 +9,19 @@
 </head>
 <body>
 <h1>Edit Category</h1>
-<form class="col-6" action="/categories/add" method="post" enctype="multipart/form-data">
+<div th:if="${not #strings.isEmpty(errorMessage)}" class="alert alert-danger">
+    <p th:text="${errorMessage}"></p>
+</div>
+<form th:object="${category}" class="col-6" th:action="@{/categories/edit/{id}(id=${category.id})}" method="post" enctype="multipart/form-data">
     <div data-mdb-input-init class="form-outline mb-4">
-        <input type="text" name="categoryName" id="form6Example4" class="form-control" />
+        <input type="text" th:field="*{categoryName}" id="form6Example4" class="form-control" />
         <label class="form-label" for="form6Example4">Category Name</label>
     </div>
+    <input type="hidden" th:field="*{id}" />
     <!-- Submit button -->
     <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block mb-4">Save</button>
 </form>
+
 </body>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.umd.min.js"></script>
 </html>

@@ -12,7 +12,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ra.model.Product;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -27,4 +29,7 @@ public class Category {
     private String categoryName;
 
     private Boolean status;
+
+    @OneToMany(mappedBy = "category")
+    private Set<Product> products = new HashSet<>();
 }
