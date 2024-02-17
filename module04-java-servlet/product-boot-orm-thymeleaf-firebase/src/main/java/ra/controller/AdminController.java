@@ -24,13 +24,13 @@ public class AdminController {
         List<Product> products = productService.getAllProducts();
         model.addAttribute("categories", categories);
         model.addAttribute("products", products);
-        return "admin-page";
+        return "admin/admin-page";
     }
 
     //login admin page
     @GetMapping("/admin/login")
     public String loginAdmin(Model model){
-        return "login-admin";
+        return "admin/login-admin";
     }
 
 }
