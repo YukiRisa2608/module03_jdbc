@@ -6,7 +6,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import ra.model.Category;
 import ra.model.Product;
+import ra.service.CategoryService;
 import ra.service.ProductService;
 
 import java.util.List;
@@ -16,10 +19,16 @@ public class HomeController {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    CategoryService categoryService;
+
     @GetMapping("/home")
     public String getHome(Model model) {
         List<Product> products = productService.getAllProducts();
+        List<Category> categories = categoryService.getAllCategories();
+        
         model.addAttribute("products", products);
+        model.addAttribute("categories", categories);
         return "home/home"; // Điều hướng đến trang chủ (home.html)
     }
 
