@@ -36,9 +36,6 @@ public class User {
     private String email;
 
     @NotBlank
-    private String birthday;
-
-    @NotBlank
     private String password;
 
     @Enumerated(EnumType.ORDINAL)
@@ -46,13 +43,4 @@ public class User {
 
     private Boolean status;
 
-    private String imgUrl;
-
-    @UpdateTimestamp
-    @Temporal(TIMESTAMP)
-    private LocalDateTime lastUpdated;
-
-    @CreationTimestamp
-    @Temporal(TIMESTAMP)
-    private LocalDateTime createdDate;
 }

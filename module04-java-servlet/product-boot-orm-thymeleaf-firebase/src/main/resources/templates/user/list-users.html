@@ -9,50 +9,137 @@
 </head>
 <body>
 <div class="container">
-    <div class="row">
-        <div class="col-md-9">
-            <div class="text-center mb-3 mt-3">
-                <h2>User Management</h2>
+    <div class="row mb-2 justify-content-center">
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <h1>User Management</h1>
             </div>
-            <table class="table align-middle mb-0 bg-white">
-                <thead class="bg-light">
-                <tr>
-                    <th>Name & Avatar</th>
-                    <th>Email</th>
-                    <th>Birthday</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Last Updated</th>
-                    <th>Created Date</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="user : ${users}">
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img th:if="${user.imgUrl}" th:src="${user.imgUrl}" alt="" style="width: 45px; height: 45px" class="rounded-circle" />
-                            <div class="ms-3">
-                                <p class="fw-bold mb-1" th:text="${user.username}">John Doe</p>
-                            </div>
+        </div>
+<!--liên kết trang-->
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <!-- Liên kết quản lý sản phẩm -->
+                <a th:href="@{/products}" class="btn btn-primary">
+                    <i class="fas fa-boxes"></i> Product
+                </a>
+            </div>
+            <div class="col-auto">
+                <!-- Liên kết quản lý danh mục -->
+                <a th:href="@{/categories}" class="btn btn-primary">
+                    <i class="fas fa-tags"></i> Category
+                </a>
+            </div>
+            <div class="col-auto">
+                <!-- Liên kết trang chủ -->
+                <a th:href="@{/home}" class="btn btn-primary">
+                    <i class="fas fa-home"></i> Home Page
+                </a>
+            </div>
+            <div class="col-auto">
+                <!-- Form tìm kiếm người dùng -->
+                <form th:action="@{/users/search}" method="get">
+                    <div class="input-group">
+                        <div class="form-outline" data-mdb-input-init>
+                            <input type="search" id="form1" name="keyword" class="form-control" />
+                            <label class="form-label" for="form1">Search Users</label>
                         </div>
-                    </td>
-                    <td>
-                        <span th:class="${user.status} ? 'badge badge-success rounded-pill d-inline' : 'badge badge-danger rounded-pill d-inline'" th:text="${user.status} ? 'Active' : 'Inactive'"></span>
-                    </td>
-                    <td th:text="${user.lastUpdated}">Last Updated</td>
-                    <td th:text="${user.createdDate}">Created Date</td>
-                    <td>
-                        <button type="button" class="btn btn-link btn-sm btn-rounded">
-                            Edit
+                        <button type="submit" class="btn btn-primary" data-mdb-ripple-init>
+                            <i class="fas fa-search"></i>
                         </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+                    </div>
+                </form>
+            </div>
+            <!--logout -->
+            <div class="col-auto">
+                <button id="logoutButton" class="btn btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+
+    </div>
+<!--info-->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-9 mt-3 mb-3 text-center">
+                <div class="col">
+                    <!-- Liên kết thêm user -->
+                    <a th:href="@{/users/add}" class="btn btn-success w-100">Add New User +</a>
+                </div>
+                <!-- Hiển thị thông báo không xóa được -->
+                <div th:if="${not #strings.isEmpty(errorMessage)}" class="alert alert-danger">
+                    <p th:text="${errorMessage}"></p>
+                </div>
+                <!-- Hiển thị thông báo xóa thành công -->
+                <div th:if="${not #strings.isEmpty(successMessage)}" class="alert alert-success">
+                    <p th:text="${successMessage}"></p>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.username}"></td>
+                        <td th:text="${user.email}"></td>
+                        <td>
+                            <span th:class="${user.status} ? 'badge bg-success' : 'badge bg-secondary'" th:text="${user.status} ? 'Active' : 'Inactive'"></span>
+                        </td>
+                        <td>
+                            <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-warning btn-sm">
+                                <i class="fas fa-pencil-alt"></i> Edit
+                            </a>
+                            <a th:href="@{/users/delete/{id}(id=${user.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?');">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </a>
+                            <a th:href="@{/users/toggleStatus/{id}(id=${user.id})}" class="btn btn-sm"
+                               th:class="${user.status} ? 'btn-danger' : 'btn-success'" style="color: white;">
+                                <i class="fas" th:class="${user.status} ? 'fa-lock' : 'fa-unlock'">
+                                </i> <span th:text="${user.status} ? 'Block' : 'Unblock'"></span>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
 </body>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.umd.min.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var logedUser = localStorage.getItem('user');
+    var user = /*[[${user}]]*/ null;
+    console.log(user);
+    console.log(logedUser);
+    if(user != null) {
+        localStorage.setItem('user', JSON.stringify(user));
+    } else if(logedUser === null) {
+        window.location.href =  window.location.origin + "/admin/login";
+    }
+    /*]]>*/
+</script>
+
+<!--Logout-->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // Đợi cho đến khi document tải xong
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // Xử lý sự kiện click cho nút logout
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            // Xóa user khỏi localStorage
+            localStorage.removeItem('user');
+
+            // Chuyển hướng người dùng đến trang đăng nhập
+            window.location.href = "/admin/login";
+        });
+    });
+    /*]]>*/
+</script>
 </html>

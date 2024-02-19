@@ -15,29 +15,45 @@
                 <h1>Categories Management</h1>
             </div>
         </div>
-        <div class="row justify-content-center">
+    </div>
+<!--Liên kết trang-->
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <!-- Liên kết quản lý sản phẩm -->
             <div class="col-auto">
-                <!-- Liên kết quản lý category -->
-                <a th:href="@{/products}" class="btn btn-primary">Product Management</a>
-            </div><div class="col-auto">
-            <!-- Liên kết home page -->
-            <a th:href="@{/home}" class="btn btn-primary">Go Home Page</a>
-        </div>
+                <a th:href="@{/products}" class="btn btn-primary">
+                    <i class="fas fa-box-open"></i> Product
+                </a>
+            </div>
+            <!-- Liên kết quản lý người dùng -->
             <div class="col-auto">
-                <form th:action="@{/categories/search}">
-                    <div class="input-group">
-                        <div class="form-outline" data-mdb-input-init>
-                            <input type="search" id="form1" name="keyword" class="form-control" />
-                            <label class="form-label" for="form1">Search</label>
-                        </div>
-                        <button type="submit" class="btn btn-primary" data-mdb-ripple-init>
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
+                <a th:href="@{/users}" class="btn btn-primary">
+                    <i class="fas fa-users"></i> User
+                </a>
+            </div>
+            <!-- Liên kết trang chủ -->
+            <div class="col-auto">
+                <a th:href="@{/home}" class="btn btn-primary">Go Home Page</a>
+            </div>
+            <!-- Form tìm kiếm -->
+            <div class="col-auto">
+                <form th:action="@{/categories/search}" class="d-flex">
+                    <input type="search" id="form1" name="keyword" class="form-control me-2" placeholder="Search"/>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </form>
+            </div>
+            <!-- Nút đăng xuất -->
+            <div class="col-auto">
+                <button id="logoutButton" class="btn btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
             </div>
         </div>
     </div>
+
+    <!--Body-->
     <div class="row justify-content-center">
         <div class="col-md-9 mt-3 mb-3 text-center">
             <ul class="list-group list-group-light">
@@ -81,6 +97,23 @@
         if(user === null) {
             window.location.href =  window.location.origin + "/admin/login";
         }
+    /*]]>*/
+</script>
+
+<!--Logout-->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // Đợi cho đến khi document tải xong
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // Xử lý sự kiện click cho nút logout
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            // Xóa user khỏi localStorage
+            localStorage.removeItem('user');
+
+            // Chuyển hướng người dùng đến trang đăng nhập
+            window.location.href = "/admin/login";
+        });
+    });
     /*]]>*/
 </script>
 </html>

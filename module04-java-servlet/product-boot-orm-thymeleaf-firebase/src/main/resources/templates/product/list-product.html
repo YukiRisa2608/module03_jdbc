@@ -8,6 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.css" rel="stylesheet" />
 </head>
 <body>
+<!--h1-->
 <div class="container">
     <div class="row mb-2 justify-content-center">
         <div class="row justify-content-center">
@@ -15,16 +16,29 @@
                 <h1>List Products Management</h1>
             </div>
         </div>
+<!--Liên kết trang-->
         <div class="row justify-content-center">
+            <!-- Liên kết quản lý category -->
             <div class="col-auto">
-                <!-- Liên kết quản lý category -->
-                <a th:href="@{/categories}" class="btn btn-primary">Categories Management</a>
-            </div><div class="col-auto">
+                <a th:href="@{/categories}" class="btn btn-primary">
+                    <i class="fas fa-tags"></i> Categories
+                </a>
+            </div>
+            <!-- Liên kết quản lý người dùng -->
+            <div class="col-auto">
+                <a th:href="@{/users}" class="btn btn-primary">
+                    <i class="fas fa-users"></i> User
+                </a>
+            </div>
             <!-- Liên kết home page -->
-            <a th:href="@{/home}" class="btn btn-primary">Go Home Page</a>
-        </div>
             <div class="col-auto">
-                <form th:action="@{products/search}">
+                <a th:href="@{/home}" class="btn btn-primary">
+                    <i class="fas fa-home"></i> Home Page
+                </a>
+            </div>
+                <!-- Form tìm kiếm sản phẩm -->
+            <div class="col-auto">
+                <form th:action="@{/products/search}">
                     <div class="input-group">
                         <div class="form-outline" data-mdb-input-init>
                             <input type="search" id="form1" name="keyword" class="form-control" />
@@ -36,10 +50,15 @@
                     </div>
                 </form>
             </div>
+            <!-- Logout -->
+            <div class="col-auto">
+                <button id="logoutButton" class="btn btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
         </div>
     </div>
-</div>
-<div class="container">
+<!--Body-->
     <div class="row">
         <div class="col">
             <!-- Liên kết thêm sản phẩm -->
@@ -94,4 +113,34 @@
 </div>
 </body>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.umd.min.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var logedUser = localStorage.getItem('user');
+    var user = /*[[${user}]]*/ null;
+    console.log(user);
+    console.log(logedUser);
+    if(user != null) {
+        localStorage.setItem('user', JSON.stringify(user));
+    } else if(logedUser === null) {
+        window.location.href =  window.location.origin + "/admin/login";
+    }
+    /*]]>*/
+</script>
+
+<!--Logout-->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // Đợi cho đến khi document tải xong
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // Xử lý sự kiện click cho nút logout
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            // Xóa user khỏi localStorage
+            localStorage.removeItem('user');
+
+            // Chuyển hướng người dùng đến trang đăng nhập
+            window.location.href = "/admin/login";
+        });
+    });
+    /*]]>*/
+</script>
 </html>

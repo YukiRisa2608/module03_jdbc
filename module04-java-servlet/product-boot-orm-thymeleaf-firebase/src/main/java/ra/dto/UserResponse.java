@@ -1,7 +1,4 @@
 package ra.dto;
-
-import static jakarta.persistence.TemporalType.TIMESTAMP;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,16 +15,9 @@ public class UserResponse {
 
     private String email;
 
-    private String birthday;
-
     private Role role;
 
-    private String lastUpdated;
-
-    private String createdDate;
-
     public UserResponse(User user) {
-        this.birthday = user.getBirthday();
         this.email = user.getEmail();
         this.id = user.getId();
         this.username = user.getUsername();

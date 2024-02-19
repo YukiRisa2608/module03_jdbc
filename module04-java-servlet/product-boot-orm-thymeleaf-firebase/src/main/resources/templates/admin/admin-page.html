@@ -32,11 +32,19 @@
             <!-- Liên kết home page -->
                 <a th:href="@{/home}" class="btn btn-primary">Go Home Page</a>
             </div>
+            <!--logout -->
+            <div class="col-auto">
+                <button id="logoutButton" class="btn btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
         </div>
     </div>
 </div>
 </body>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.umd.min.js"></script>
+
+<!--Login-->
 <script th:inline="javascript">
     /*<![CDATA[*/
         var logedUser = localStorage.getItem('user');
@@ -50,4 +58,22 @@
         }
     /*]]>*/
 </script>
+
+<!--Logout-->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // Đợi cho đến khi document tải xong
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // Xử lý sự kiện click cho nút logout
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            // Xóa user khỏi localStorage
+            localStorage.removeItem('user');
+
+            // Chuyển hướng người dùng đến trang đăng nhập
+            window.location.href = "/admin/login";
+        });
+    });
+    /*]]>*/
+</script>
+
 </html>
