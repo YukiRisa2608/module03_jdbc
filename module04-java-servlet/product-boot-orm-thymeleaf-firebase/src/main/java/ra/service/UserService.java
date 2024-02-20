@@ -13,6 +13,7 @@ import ra.dto.UserLoginDto;
 import ra.model.Category;
 import ra.model.Product;
 import ra.model.User;
+import ra.utils.Enum.CustomException;
 import ra.utils.Enum.EmailExistsException;
 import ra.utils.Enum.Role;
 
@@ -23,10 +24,6 @@ public class UserService {
 
     public List<User> findAll() {
         return userRepository.findAll();
-    }
-
-    public boolean checkLogin(UserLoginDto user) {
-        return userRepository.existsByEmailAndPasswordAndRole(user.getEmail(), user.getPassword(), user.getRole());
     }
 
     public User findUserById(Long id) {
@@ -60,8 +57,6 @@ public class UserService {
         return userRepository.save(user);
     }
 
-
-
     //Edit
     public User editUser(EditUserDto userDto) throws Exception {
         User user = userRepository.findById(userDto.getId())
@@ -83,5 +78,32 @@ public class UserService {
     public void deleteUserById(Long id) {
         userRepository.deleteById(id);
     }
+
+    //Block / unblock
+    public void userStatus(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        user.setStatus(!user.getStatus());
+        userRepository.save(user);
+    }
+
+    //check login
+    public boolean checkLogin(UserLoginDto userLoginDto) {
+        Optional<User> userOpt = userRepository.findByEmailAndRole(userLoginDto.getEmail(), userLoginDto.getRole());
+
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            // Kiểm tra trạng thái status và mật khẩu
+            if (user.getStatus() && user.getPassword().equals(userLoginDto.getPassword())) {
+                return true;
+            } else if (!user.getStatus()) {
+                // Nếu user bị khóa (status = false)
+                throw new CustomException("Account is blocked");
+            }
+        }
+        // Nếu không tìm thấy user hoặc mật khẩu không khớp
+        return false;
+    }
+
+
 
 }

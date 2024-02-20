@@ -17,6 +17,7 @@ import ra.model.User;
 import ra.service.CategoryService;
 import ra.service.ProductService;
 import ra.service.UserService;
+import ra.utils.Enum.CustomException;
 import ra.utils.Enum.Role;
 import ra.dto.*;
 
@@ -54,15 +55,32 @@ public class AdminController {
         return "admin/login-admin";
     }
 
-    @PostMapping("/admin/login")
-    public String loginAdmin(@ModelAttribute UserLoginDto userLoginDto, Model model, RedirectAttributes rattrs){
+//    @PostMapping("/admin/login")
+//    public String loginAdmin(@ModelAttribute UserLoginDto userLoginDto, Model model, RedirectAttributes rattrs){
+//        userLoginDto.setRole(Role.ADMIN);
+//        if(userService.checkLogin(userLoginDto)) {
+//            rattrs.addAttribute("email", userLoginDto.getEmail());
+//            return "redirect:/admin";
+//        }
+//        model.addAttribute("errorMessage", "Email or password not match");
+//        return "admin/login-admin";
+//    }
+@PostMapping("/admin/login")
+public String loginAdmin(@ModelAttribute UserLoginDto userLoginDto, Model model, RedirectAttributes redirectAttributes) {
+    try {
         userLoginDto.setRole(Role.ADMIN);
-        if(userService.checkLogin(userLoginDto)) {
-            rattrs.addAttribute("email", userLoginDto.getEmail());
+        if (userService.checkLogin(userLoginDto)) {
+            redirectAttributes.addFlashAttribute("email", userLoginDto.getEmail());
             return "redirect:/admin";
+        } else {
+            model.addAttribute("errorMessage", "Email or password not match");
+            return "admin/login-admin";
         }
-        model.addAttribute("errorMessage", "Email or password not mactch");
+    } catch (CustomException e) {
+        model.addAttribute("errorMessage", e.getMessage());
         return "admin/login-admin";
     }
+}
+
 
 }

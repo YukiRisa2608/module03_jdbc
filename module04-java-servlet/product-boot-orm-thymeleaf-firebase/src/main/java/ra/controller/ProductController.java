@@ -5,8 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ra.dto.AddProductDto;
-import ra.dto.EditProductDto;
+import ra.dto.AddOrEditProductDto;
 import ra.model.Category;
 import ra.model.Product;
 import ra.service.CategoryService;
@@ -33,6 +32,18 @@ public class ProductController {
         return "product/list-product";
     }
 
+    //show or hide
+    @GetMapping("/status/{id}")
+    public String toggleProductStatus(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            productService.productStatus(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Product status updated successfully.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error updating product status.");
+        }
+        return "redirect:/products";
+    }
+
     // Hiển thị form thêm sản phẩm
     @GetMapping("/add")
     public String showAddProductForm(Model model) {
@@ -43,19 +54,17 @@ public class ProductController {
 
     // Xử lý thêm sản phẩm
     @PostMapping("/add")
-    public String addProduct(@ModelAttribute("product") AddProductDto addProductDto) {
-        Product product = new Product();
-        Category category = categoryService.getCategoryById(addProductDto.getCategoryId());
-        product.setCategory(category);
-        product.setProductName(addProductDto.getProductName());
-        product.setPrice(addProductDto.getPrice());
-        product.setDescription(addProductDto.getDescription());
-        product.setQuantity(addProductDto.getQuantity());
-        product.setClassification(addProductDto.getClassification());
-        product.setStatus(true);
-        product.setImgUrl(uploadService.upload(addProductDto.getFile()));
-        productService.addProduct(product);
-        return "redirect:/products"; // Điều hướng đến trang danh sách sản phẩm sau khi thêm
+    public String addProduct(@ModelAttribute("product") AddOrEditProductDto addProductDto, RedirectAttributes redirectAttributes) {
+        try {
+            // Chuyển đổi từ DTO sang Entity
+            Product product = convertDtoToEntity(addProductDto, null); // Gửi null vì đây là thêm mới
+            productService.addProduct(product);
+            redirectAttributes.addFlashAttribute("successMessage", "Product added successfully.");
+            return "redirect:/products";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error adding product: " + e.getMessage());
+            return "redirect:/products";
+        }
     }
 
     //Form edit product
@@ -66,7 +75,7 @@ public class ProductController {
             // Xử lý trường hợp sản phẩm không tìm thấy
             return "redirect:/products";
         }
-        EditProductDto editProductDto = new EditProductDto();
+        AddOrEditProductDto editProductDto = new AddOrEditProductDto();
         // Chuyển đổi từ Product sang EditProductDto
         editProductDto.setProductId(product.getId());
         editProductDto.setCategoryId(product.getCategory().getId());
@@ -87,25 +96,14 @@ public class ProductController {
 
 
     //Xử lí edit
-    @PostMapping("/edit")
-    public String editProduct(@ModelAttribute("editProductDto") EditProductDto editProductDto) {
-        Product product = productService.getProductById(editProductDto.getProductId());
-        Category category = categoryService.getCategoryById(editProductDto.getCategoryId());
-        // Cập nhật thông tin sản phẩm
-        product.setCategory(category);
-        product.setProductName(editProductDto.getProductName());
-        product.setPrice(editProductDto.getPrice());
-        product.setDescription(editProductDto.getDescription());
-        product.setQuantity(editProductDto.getQuantity());
-        product.setClassification(editProductDto.getClassification());
-        product.setStatus(editProductDto.getStatus());
-        //Nếu người dùng có chọn file mới thì mới thực hiện set file mới
-        if (!editProductDto.getFile().isEmpty()) {
-            product.setImgUrl(uploadService.upload(editProductDto.getFile()));
-        }
-        productService.updateProduct(product);
+    @PostMapping("/edit/{id}")
+    public String editProduct(@PathVariable Long id, @ModelAttribute("editProductDto") AddOrEditProductDto editProductDto, RedirectAttributes redirectAttributes) throws Exception {
+        Product productToUpdate = convertDtoToEntity(editProductDto, id);
+        productService.editProduct(productToUpdate);
+        redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully.");
         return "redirect:/products";
     }
+
 
     //search
     @GetMapping("/search")
@@ -126,6 +124,34 @@ public class ProductController {
             redirectAttributes.addFlashAttribute("errorMessage", "Error deleting product.");
         }
         return "redirect:/products";
+    }
+
+    //Convert Dto to Entity
+    private Product convertDtoToEntity(AddOrEditProductDto addProductDto, Long productId) {
+        Product product;
+        if (productId != null) {
+            //chỉnh sửa sản phẩm
+            product = productService.getProductById(productId);
+        } else {
+            //thêm mới sản phẩm
+            product = new Product();
+        }
+
+        Category category = categoryService.getCategoryById(addProductDto.getCategoryId());
+        product.setCategory(category);
+        product.setProductName(addProductDto.getProductName());
+        product.setPrice(addProductDto.getPrice());
+        product.setDescription(addProductDto.getDescription());
+        product.setQuantity(addProductDto.getQuantity());
+        product.setClassification(addProductDto.getClassification());
+        product.setStatus(true);
+
+        // Chỉ thay đổi imgUrl nếu có file mới được cung cấp
+        if (addProductDto.getFile() != null && !addProductDto.getFile().isEmpty()) {
+            product.setImgUrl(uploadService.upload(addProductDto.getFile()));
+        }
+
+        return product;
     }
 }
 

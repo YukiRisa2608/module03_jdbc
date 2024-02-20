@@ -36,6 +36,14 @@ public class UserController {
         return "user/list-users";
     }
 
+    //block / unblock
+    @GetMapping("/status/{id}")
+    public String toggleStatus(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        userService.userStatus(id);
+        redirectAttributes.addFlashAttribute("successMessage", "User status updated successfully");
+        return "redirect:/users";
+    }
+
     //add
     @GetMapping("/add")
     public String showAddUserForm(Model model) {

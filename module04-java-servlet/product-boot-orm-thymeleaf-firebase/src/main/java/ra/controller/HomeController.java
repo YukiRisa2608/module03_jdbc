@@ -24,12 +24,13 @@ public class HomeController {
 
     @GetMapping("/home")
     public String getHome(Model model) {
-        List<Product> products = productService.getAllProducts();
-        List<Category> categories = categoryService.getAllCategories();
-        
+
+        List<Product> products = productService.findAllActiveProducts();
+        List<Category> categories = categoryService.findAllActiveCategories();
+
         model.addAttribute("products", products);
         model.addAttribute("categories", categories);
-        return "home/home"; // Điều hướng đến trang chủ (home.html)
+        return "home/home";
     }
 
     //search

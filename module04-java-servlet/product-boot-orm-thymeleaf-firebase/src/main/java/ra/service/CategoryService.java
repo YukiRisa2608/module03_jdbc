@@ -4,11 +4,10 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ra.dao.CategoryRepostory;
+import ra.dao.CategoryRepository;
 import ra.dao.ProductReponsitory;
 import ra.model.Category;
 import ra.model.CategoryProductCount;
-import ra.model.Product;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +17,7 @@ import java.util.Optional;
 @Service
 public class CategoryService {
     @Autowired
-    private CategoryRepostory categoryRepository;
+    private CategoryRepository categoryRepository;
 
     @Autowired
     private ProductReponsitory productRepository;
@@ -80,6 +79,11 @@ public class CategoryService {
         }
     }
 
+    //lấy tất cả categories có status là true
+    public List<Category> findAllActiveCategories() {
+        return categoryRepository.findAllByStatusTrue();
+    }
+
     //Show or Hide
     public void showOrHideCategory(Long id) {
         Category category = categoryRepository.findById(id)
@@ -105,8 +109,5 @@ public class CategoryService {
         }
         return categoryCounts;
     }
-
-
-
 }
 

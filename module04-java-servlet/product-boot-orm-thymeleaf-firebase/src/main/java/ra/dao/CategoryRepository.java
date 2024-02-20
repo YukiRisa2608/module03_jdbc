@@ -8,7 +8,7 @@ import ra.model.CategoryProductCount;
 
 import java.util.List;
 
-public interface CategoryRepostory extends JpaRepository <Category, Long> {
+public interface CategoryRepository extends JpaRepository <Category, Long> {
     //Check if exist name for add
     boolean existsByCategoryName(String categoryName);
     //Check if exist name and ID for update
@@ -21,4 +21,6 @@ public interface CategoryRepostory extends JpaRepository <Category, Long> {
     //Count product by category ID
     @Query("SELECT COUNT(p) FROM Product p WHERE p.category.id = :categoryId")
     Long countProductsByCategoryId(@Param("categoryId") Long categoryId);
+    // Tìm tất cả categories có status là true
+    List<Category> findAllByStatusTrue();
 }

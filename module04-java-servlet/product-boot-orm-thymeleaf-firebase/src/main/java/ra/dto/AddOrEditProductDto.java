@@ -9,8 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class EditProductDto {
-    @NotNull
+public class AddOrEditProductDto {
+
     private Long productId;
 
     @NotNull

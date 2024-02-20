@@ -14,7 +14,8 @@
         <h1>Edit Product</h1>
     </div>
 </div>
-<form class="col-6" th:action="@{/products/edit}" th:object="${editProductDto}" method="post" enctype="multipart/form-data">
+<form class="col-6" th:action="@{/products/edit/{id}(id=${editProductDto.productId})}" th:object="${editProductDto}" method="post" enctype="multipart/form-data">
+<!--<form class="col-6" th:action="@{/products/edit}" th:object="${editProductDto}" method="post" enctype="multipart/form-data">-->
     <input type="hidden" th:field="*{productId}" />
     <div class="row mb-4">
         <div class="col">

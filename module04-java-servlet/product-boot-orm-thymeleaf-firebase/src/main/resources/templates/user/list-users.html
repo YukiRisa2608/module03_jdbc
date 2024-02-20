@@ -97,11 +97,10 @@
                             <a th:href="@{/users/delete/{id}(id=${user.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?');">
                                 <i class="fas fa-trash-alt"></i> Delete
                             </a>
-                            <a th:href="@{/users/toggleStatus/{id}(id=${user.id})}" class="btn btn-sm"
-                               th:class="${user.status} ? 'btn-danger' : 'btn-success'" style="color: white;">
-                                <i class="fas" th:class="${user.status} ? 'fa-lock' : 'fa-unlock'">
-                                </i> <span th:text="${user.status} ? 'Block' : 'Unblock'"></span>
+                            <a th:href="@{/users/status/{id}(id=${user.id})}" class="btn btn-sm float-end ms-1" th:classappend="${user.status} ? 'btn-info' : 'btn-danger'">
+                                <i th:class="${user.status} ? 'fas fa-unlock' : 'fas fa-lock'"></i>
                             </a>
+
                         </td>
                     </tr>
                     </tbody>
