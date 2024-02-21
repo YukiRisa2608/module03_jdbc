@@ -82,5 +82,9 @@ public class ProductService {
     public List<Product> findAllActiveProducts() {
         return productRepository.findAllByStatusTrue();
     }
+
+    public List<Product> getAllProductsSortedByDate() {
+        return productRepository.findAllByOrderByCreatedDateDesc();
+    }
 }
 

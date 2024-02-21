@@ -9,9 +9,11 @@
 </head>
 <body>
 <h1>Edit Category</h1>
+<!--Báo lỗi-->
 <div th:if="${not #strings.isEmpty(errorMessage)}" class="alert alert-danger">
     <p th:text="${errorMessage}"></p>
 </div>
+<!--form edit-->
 <form th:object="${category}" class="col-6" th:action="@{/categories/edit/{id}(id=${category.id})}" method="post" enctype="multipart/form-data">
     <div data-mdb-input-init class="form-outline mb-4">
         <input type="text" th:field="*{categoryName}" id="form6Example4" class="form-control" />
@@ -19,7 +21,7 @@
     </div>
     <input type="hidden" th:field="*{id}" />
     <!-- Submit button -->
-    <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block mb-4">Save</button>
+    <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block mb-4">Save Changes</button>
 </form>
 
 </body>

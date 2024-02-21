@@ -84,6 +84,11 @@ public class CategoryService {
         return categoryRepository.findAllByStatusTrue();
     }
 
+    //Oder by create date
+    public List<Category> getAllCategoriesSortedByDate() {
+        return categoryRepository.findAllByOrderByCreatedDateDesc();
+    }
+
     //Show or Hide
     public void showOrHideCategory(Long id) {
         Category category = categoryRepository.findById(id)
@@ -102,12 +107,20 @@ public class CategoryService {
 
     //Count product in category
     public Map<Long, Long> getCategoryCounts() {
+        // gọi đến categoryRepository findProductCountsByCategory().
+        // trả về một danh sách các đối tượng CategoryProductCount,
+        // mỗi đối tượng chứa ID của một danh mục (categoryId) và số lượng sản phẩm tương ứng (productCount) trong danh mục.
         List<CategoryProductCount> counts = categoryRepository.findProductCountsByCategory();
+        //khởi tạo một HashMap mới categoryCounts để lưu trữ kết quả.
+        // Map ánh xạ từ Long (ID của danh mục) sang Long (số lượng sản phẩm trong danh mục đó).
         Map<Long, Long> categoryCounts = new HashMap<>();
+        //duyệt qua danh sách counts nhận được từ truy vấn.
+        // Với mỗi đối tượng CategoryProductCount trong danh sách,lấy categoryId làm khóa và productCount làm giá trị, sau đó lưu chúng vào Map categoryCounts.
         for (CategoryProductCount count : counts) {
             categoryCounts.put(count.getCategoryId(), count.getProductCount());
         }
         return categoryCounts;
     }
+
 }
 

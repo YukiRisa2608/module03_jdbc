@@ -60,12 +60,12 @@
     </div>
 <!--Body-->
     <div class="row">
-        <!-- Hiển thị thông báo không xóa được -->
-        <div th:if="${not #strings.isEmpty(errorMessage)}" class="alert alert-danger">
+        <!-- Hiển thị thông báo lỗi -->
+        <div th:if="${not #strings.isEmpty(errorMessage)}" class="alert alert-danger p-1 text-center">
             <p th:text="${errorMessage}"></p>
         </div>
-        <!-- Hiển thị thông báo xóa thành công -->
-        <div th:if="${not #strings.isEmpty(successMessage)}" class="alert alert-success">
+        <!-- Hiển thị thông báo thành công -->
+        <div th:if="${not #strings.isEmpty(successMessage)}" class="alert alert-success p-1 text-center">
             <p th:text="${successMessage}"></p>
         </div>
         <div class="col">
@@ -98,9 +98,9 @@
             <td th:text="${product.productName}">Product Name</td>
             <td th:text="${product.getCategory().id}">Category ID</td>
             <td th:text="${product.description}">Description</td>
-            <td th:text="${product.price}">Price</td>
+            <td th:text="'$' +${product.price}">Price</td>
             <td th:text="${product.quantity}">Quantity</td>
-            <td th:text="${product.status}">Status</td>
+            <td th:text="${product.status} ? 'Show' : 'Hide'">Status</td>
             <td th:text="${#temporals.format(product.createdDate, 'dd/MM/yyyy HH:mm:ss')}">Created Date</td>
             <td th:text="${#temporals.format(product.lastUpdated, 'dd/MM/yyyy HH:mm:ss')}">Last Update</td>
             <td>

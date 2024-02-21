@@ -26,4 +26,7 @@ public interface ProductReponsitory extends JpaRepository <Product, Long>{
     // Tìm tất cả product có status là true
     List<Product> findAllByStatusTrue();
 
+    //order by create date
+    List<Product> findAllByOrderByCreatedDateDesc();
+
 }

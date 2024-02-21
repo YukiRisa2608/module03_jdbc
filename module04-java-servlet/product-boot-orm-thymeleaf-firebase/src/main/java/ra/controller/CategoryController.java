@@ -19,14 +19,17 @@ public class CategoryController {
     CategoryService categoryService;
     @GetMapping
     public String categoryManagement(Model model) {
-            List<Category> categories = categoryService.getAllCategories();
+            List<Category> categories = categoryService.getAllCategoriesSortedByDate();
+            // Map<Long, Long> lưu trữ một tập hợp dữ liệutrong đó:
+            //Key (Khóa): Loại dữ liệu Long, đại diện cho ID của mỗi danh mục (category).
+            //Value (Giá trị): Loại dữ liệu Long, đại diện cho số lượng sản phẩm có ID tương ứng với khóa.
             Map<Long, Long> categoryCounts = categoryService.getCategoryCounts();
             model.addAttribute("categories", categories);
             model.addAttribute("categoryCounts", categoryCounts);
             return "category/list-categories";
     }
 
-    // Hiển thị form thêm danh mục
+    // add form
     @GetMapping("/add")
     public String showAddCategoryForm(Model model) {
         model.addAttribute("category", new Category());
@@ -62,7 +65,7 @@ public class CategoryController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         if (categoryService.hasProducts(id)) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Cannot edit category because it has products.");
+            redirectAttributes.addFlashAttribute("errorMessage", "Cannot edit category if has product.");
             return "redirect:/categories";
         }
         Category category = categoryService.getCategoryById(id);

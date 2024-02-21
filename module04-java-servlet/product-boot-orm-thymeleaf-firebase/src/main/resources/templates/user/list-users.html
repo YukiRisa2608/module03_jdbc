@@ -66,12 +66,12 @@
                     <!-- Liên kết thêm user -->
                     <a th:href="@{/users/add}" class="btn btn-success w-100">Add New User +</a>
                 </div>
-                <!-- Hiển thị thông báo không xóa được -->
-                <div th:if="${not #strings.isEmpty(errorMessage)}" class="alert alert-danger">
+                <!-- Hiển thị thông báo lỗi -->
+                <div th:if="${not #strings.isEmpty(errorMessage)}" class="alert alert-danger p-1">
                     <p th:text="${errorMessage}"></p>
                 </div>
-                <!-- Hiển thị thông báo xóa thành công -->
-                <div th:if="${not #strings.isEmpty(successMessage)}" class="alert alert-success">
+                <!-- Hiển thị thông báo thành công -->
+                <div th:if="${not #strings.isEmpty(successMessage)}" class="alert alert-success p-1">
                     <p th:text="${successMessage}"></p>
                 </div>
                 <table class="table table-bordered">

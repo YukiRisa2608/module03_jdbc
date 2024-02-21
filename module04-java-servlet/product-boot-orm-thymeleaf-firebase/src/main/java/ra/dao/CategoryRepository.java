@@ -23,4 +23,6 @@ public interface CategoryRepository extends JpaRepository <Category, Long> {
     Long countProductsByCategoryId(@Param("categoryId") Long categoryId);
     // Tìm tất cả categories có status là true
     List<Category> findAllByStatusTrue();
+    //order by create date
+    List<Category> findAllByOrderByCreatedDateDesc();
 }

@@ -27,7 +27,7 @@ public class ProductController {
     // Hiển thị danh sách tất cả sản phẩm
     @GetMapping
     public String getAllProducts(Model model) {
-        List<Product> products = productService.getAllProducts();
+        List<Product> products = productService.getAllProductsSortedByDate();
         model.addAttribute("products", products);
         return "product/list-product";
     }

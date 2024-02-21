@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import ra.model.Product;
 import ra.model.User;
 import ra.utils.Enum.Role;
 
@@ -20,4 +21,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findUsersByKeyword(@Param("keyword") String keyword);
 
     Optional<User> findByEmailAndRole(String email, Role role);
+
 }

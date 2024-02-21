@@ -10,7 +10,7 @@
 <body>
 <div class="container">
     <div class="row mb-2 justify-content-center">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center mb-3">
             <div class="col-auto">
                 <h1>ADMIN PAGE</h1>
             </div>
@@ -18,19 +18,19 @@
         <div class="row justify-content-center">
             <div class="col-auto">
                 <!-- Liên kết quản lý category -->
-                <a th:href="@{/categories}" class="btn btn-primary">Categories Management</a>
+                <a th:href="@{/categories}" class="btn btn-primary"><i class="fas fa-tags"></i> Categories</a>
             </div>
             <div class="col-auto">
                 <!-- Liên kết quản lý product -->
-                <a th:href="@{/products}" class="btn btn-primary">Product Management</a>
+                <a th:href="@{/products}" class="btn btn-primary"><i class="fas fa-box-open"></i> Product</a>
             </div>
             <div class="col-auto">
                 <!-- Liên kết quản lý user admin-users -->
-                <a th:href="@{/users}" class="btn btn-primary">User Admin Management</a>
+                <a th:href="@{/users}" class="btn btn-primary"><i class="fas fa-users-cog"></i> User</a>
             </div>
             <div class="col-auto">
-            <!-- Liên kết home page -->
-                <a th:href="@{/home}" class="btn btn-primary">Go Home Page</a>
+                <!-- Liên kết home page -->
+                <a th:href="@{/home}" class="btn btn-primary"><i class="fas fa-home"></i> Home Page</a>
             </div>
             <!--logout -->
             <div class="col-auto">
@@ -39,6 +39,7 @@
                 </button>
             </div>
         </div>
+
     </div>
 </div>
 </body>

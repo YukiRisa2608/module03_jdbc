@@ -60,11 +60,11 @@
                 <a th:href="@{/categories/add}" class="btn btn-success" data-mdb-ripple-init>Add New Category +</a>
 
                 <!-- Hiển thị thông báo không xóa được -->
-                <div th:if="${not #strings.isEmpty(errorMessage)}" class="alert alert-danger">
+                <div th:if="${not #strings.isEmpty(errorMessage)}" class="alert alert-danger p-1">
                     <p th:text="${errorMessage}"></p>
                 </div>
                 <!-- Hiển thị thông báo xóa thành công -->
-                <div th:if="${not #strings.isEmpty(successMessage)}" class="alert alert-success">
+                <div th:if="${not #strings.isEmpty(successMessage)}" class="alert alert-success p-1">
                     <p th:text="${successMessage}"></p>
                 </div>
 
@@ -90,6 +90,7 @@
 </div>
 </body>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.umd.min.js"></script>
+<!--Nếu không có thông tin người dùng tức chưa đăng nhập sẽ chuyển hướng đến trang đăng nhập-->
 <script th:inline="javascript">
     /*<![CDATA[*/
         var user = localStorage.getItem('user');
